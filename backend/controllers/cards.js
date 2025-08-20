@@ -2,54 +2,62 @@
 /* eslint-disable comma-dangle */
 const Card = require("../models/card");
 
-module.exports.createCard = (req, res) => {
+const {
+  WentWrongError,
+  WrongAuthError,
+  UnauthorizedError,
+  NotFoundError,
+  ServerError,
+} = require("../errors/handle-err");
+
+module.exports.createCard = (req, res, next) => {
   Card.create({
     name: req.body.name,
     link: req.body.link,
     owner: req.user._id,
   })
-    .then((newCard) => res.status(201).send(newCard))
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send({ message: "Error interno del servidor" });
-    });
+    .then((newCard) => {
+      if (!newCard) {
+        throw new ServerError("Error interno del servidor");
+      }
+      res.status(201).send(newCard);
+    })
+    .catch(next);
 };
 
-module.exports.getCards = (req, res) => {
+module.exports.getCards = (req, res, next) => {
   Card.find({})
-    .orFail()
     .populate("owner")
-    .then((cards) => res.status(200).send(cards))
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send({ message: "Error interno del servidor" });
-    });
+    .then((cards) => {
+      if (!cards) {
+        throw new ServerError("Error interno del servidor");
+      }
+      res.status(200).send(cards);
+    })
+    .catch(next);
 };
 
-module.exports.deleteCard = (req, res) => {
+module.exports.deleteCard = (req, res, next) => {
   const { cardId } = req.params;
 
   Card.findById(cardId)
     .then((foundCard) => {
       if (!foundCard) {
-        return res.status(404).send({ message: "Tarjeta no encontrada" });
+        throw new NotFoundError("Tarjeta no encontrada");
       }
       if (foundCard.owner.toString() !== req.user._id) {
-        return res
-          .status(403)
-          .send({ message: "No tienes permiso para eliminar esta tarjeta" });
+        throw new UnauthorizedError(
+          "No tienes permiso para eliminar esta tarjeta"
+        );
       }
       return Card.findByIdAndDelete(cardId).then((deletedCard) => {
         res.status(200).send(deletedCard);
       });
     })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send({ message: "Error interno del servidor" });
-    });
+    .catch(next);
 };
 
-module.exports.likeCard = (req, res) =>
+module.exports.likeCard = (req, res, next) =>
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
@@ -57,16 +65,13 @@ module.exports.likeCard = (req, res) =>
   )
     .then((card) => {
       if (!card) {
-        return res.status(404).send({ message: "Tarjeta no encontrada" });
+        throw new NotFoundError("Tarjeta no encontrada");
       }
       return res.status(200).send(card);
     })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send({ message: "Error interno del servidor" });
-    });
+    .catch(next);
 
-module.exports.dislikeCard = (req, res) =>
+module.exports.dislikeCard = (req, res, next) =>
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
@@ -74,11 +79,8 @@ module.exports.dislikeCard = (req, res) =>
   )
     .then((card) => {
       if (!card) {
-        return res.status(404).send({ message: "Tarjeta no encontrada" });
+        throw new NotFoundError("Tarjeta no encontrada");
       }
       return res.status(200).send(card);
     })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send({ message: "Error interno del servidor" });
-    });
+    .catch(next);

@@ -1,9 +1,11 @@
+/* eslint-disable comma-dangle */
 const express = require("express");
 const mongoose = require("mongoose");
+const { celebrate, Joi } = require("celebrate");
 const { errors } = require("celebrate");
 require("dotenv").config();
 
-const { createUser, login } = require("./controllers/users");
+const { createUser, login, getCurrentUser } = require("./controllers/users");
 const auth = require("./middleware/auth");
 const { requestLogger, errorLogger } = require("./middleware/loggers");
 const users = require("./routes/users");
@@ -20,9 +22,28 @@ const { PORT = 3000 } = process.env;
 
 app.use(requestLogger);
 
-app.post("/signup", createUser);
-app.post("/signin", login);
+app.post(
+  "/signup",
+  celebrate({
+    body: Joi.object().keys({
+      email: Joi.string().required().email(),
+      password: Joi.string().required(),
+    }),
+  }),
+  createUser
+);
+app.post(
+  "/signin",
+  celebrate({
+    body: Joi.object().keys({
+      email: Joi.string().required().email(),
+      password: Joi.string().required(),
+    }),
+  }),
+  login
+);
 app.use(auth);
+app.use("/users/me", getCurrentUser);
 app.use("/users", users);
 app.use("/cards", cards);
 
@@ -33,14 +54,6 @@ app.use((req, res) => {
 app.use(errorLogger);
 
 app.use(errors());
-
-app.use((err, req, res, next) => {
-  req.user = {
-    _id: "686ed60d84ef414f235edc53",
-  };
-
-  next();
-});
 
 app.use(express.static("public"));
 

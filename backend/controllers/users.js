@@ -1,13 +1,37 @@
 /* eslint-disable comma-dangle */
 const bcrypt = require("bcryptjs");
+
 const jwt = require("jsonwebtoken");
+
 const User = require("../models/user");
 
-module.exports.login = (req, res) => {
+const {
+  WentWrongError,
+  WrongAuthError,
+  NotFoundError,
+  ServerError,
+} = require("../errors/handle-err");
+
+module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
-  return User.findUserByCredentials(email, password)
+  return User.findOne(email)
+    .select("+password")
     .then((user) => {
+      if (!user) {
+        throw new WrongAuthError("Correo o contraseña incorrectos");
+      }
+      return bcrypt.compare(password, user.password).then((matched) => {
+        if (!matched) {
+          throw new WrongAuthError("Correo o contraseña incorrectos");
+        }
+        return user;
+      });
+    })
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError("Usuario no encontrado");
+      }
       const { NODE_ENV, JWT_SECRET } = process.env;
       const token = jwt.sign(
         { _id: user._id },
@@ -16,82 +40,95 @@ module.exports.login = (req, res) => {
       );
       res.send({ token });
     })
-    .catch((err) => {
-      res.status(401).send({ message: err.message });
-    });
+    .catch(next);
 };
 
-module.exports.createUser = (req, res) => {
+module.exports.createUser = async (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then((hash) => {
     User.create({
       email: req.body.email,
       password: hash,
     })
-      .then(
-        (user) =>
-          // eslint-disable-next-line implicit-arrow-linebreak
-          res.send({
-            _id: user._id,
-            email: user.email,
-          })
-        // eslint-disable-next-line function-paren-newline
-      )
-      .catch((err) => res.status(400).send(err));
+      .then((user) => {
+        if (!user) {
+          throw new ServerError("Error interno del servidor");
+        }
+        res.send({
+          _id: user._id,
+          email: user.email,
+        });
+      })
+      .catch(next);
   });
 };
 
-module.exports.getUsers = (req, res) => {
-  User.find({})
-    .orFail()
-    .then((users) => res.status(200).send(users))
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send({ message: "Error interno del servidor" });
-    });
+module.exports.getCurrentUser = (req, res, next) => {
+  const { _id } = req.user._id;
+
+  User.findById(_id)
+    .then((userData) => {
+      if (!userData) {
+        throw new NotFoundError("Usuario no encontrado");
+      }
+      return res.status(200).send(userData);
+    })
+    .catch(next);
 };
 
-module.exports.getUserById = (req, res) => {
+module.exports.getUsers = (req, res, next) => {
+  User.find({})
+    .then((users) => {
+      if (!users) {
+        throw new NotFoundError("No se encontraron usuarios");
+      }
+      res.status(200).send(users);
+    })
+    .catch(next);
+};
+
+module.exports.getUserById = (req, res, next) => {
   const { _id } = req.params;
 
   User.findById(_id)
     .then((userData) => {
       if (!userData) {
-        return res.status(404).send({ message: "Usuario no encontrado" });
+        throw new NotFoundError("Usuario no encontrado");
       }
       return res.status(200).send(userData);
     })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send({ message: "Error interno del servidor" });
-    });
+    .catch(next);
 };
 
-module.exports.updateUser = (req, res) => {
+module.exports.updateUser = (req, res, next) => {
   const { name, about } = req.body;
   const userId = req.user._id;
-
+  if (userId !== req.params._id) {
+    throw new WrongAuthError("No tienes permiso para actualizar este usuario");
+  }
   User.findByIdAndUpdate(
     userId,
     { name, about },
     { new: true, runValidators: true }
   )
-    .orFail()
-    .then((updatedUser) => res.status(200).send(updatedUser))
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send({ message: "Error interno del servidor" });
-    });
+    .then((updatedUser) => {
+      if (!updatedUser) {
+        throw new WentWrongError("Solicitud inválida");
+      }
+      res.status(200).send(updatedUser);
+    })
+    .catch(next);
 };
 
-module.exports.updateAvatar = (req, res) => {
+module.exports.updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
   const userId = req.user._id;
 
   User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
-    .orFail()
-    .then((updatedUser) => res.status(200).send(updatedUser))
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send({ message: "Error interno del servidor" });
-    });
+    .then((updatedUser) => {
+      if (!updatedUser) {
+        throw new WentWrongError("Solicitud inválida");
+      }
+      res.status(200).send(updatedUser);
+    })
+    .catch(next);
 };
