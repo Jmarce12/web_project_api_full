@@ -1,0 +1,91 @@
+.userform {
+  width: 358px;
+  height: 100%;
+  margin: 60px auto 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userform__title {
+  font-family: "Inter", sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  margin: 0 0 50px;
+  color: #fff;
+}
+
+.userform__form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  align-content: space-between;
+  flex: auto;
+}
+
+.userform__input-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+  flex: auto;
+}
+
+.userform__input {
+  width: 100%;
+  height: 27px;
+  padding-bottom: 13px;
+  margin: 0;
+  border-style: none;
+  border-bottom: 2px solid #ccc;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+  color: #fff;
+  background-color: #000;
+}
+
+.userform__button {
+  width: 100%;
+  height: 50px;
+  background-color: #fff;
+  border-radius: 2px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100%;
+  color: #000;
+  text-align: center;
+  /* margin-top: 186px; */
+  cursor: pointer;
+}
+
+.userform__text {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #fff;
+  text-align: center;
+  margin: 0;
+}
+
+.userform__link {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 619px) and (min-width: 320px) {
+  .userform {
+    width: 260px;
+    margin: 40px auto 42px;
+  }
+}

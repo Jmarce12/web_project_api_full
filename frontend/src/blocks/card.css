@@ -1,0 +1,86 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 282px;
+  height: fit-content;
+  position: relative;
+}
+
+.card__image {
+  width: 100%;
+  height: 282px;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+}
+
+.card__description {
+  box-sizing: border-box;
+  width: 282px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 0 0 10px 10px;
+  padding: 25px 15px 25px 21px;
+  object-fit: contain;
+}
+
+.card__title {
+  margin: 0;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 226px;
+}
+
+.card__like {
+  width: 21px;
+  height: 21px;
+  background-image: url(../images/heart-button.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #fff;
+  border-style: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.card__like:hover {
+  opacity: 60%;
+}
+
+.card__like__active {
+  width: 21px;
+  height: 21px;
+  background-image: url(../images/heart-button-active.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #fff;
+  border-style: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.card__delete {
+  width: 18px;
+  height: 19px;
+  background-image: url(../images/delete-button.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: transparent;
+  border-style: none;
+  padding: 0;
+  cursor: pointer;
+  position: absolute;
+  top: 18px;
+  right: 15px;
+}
+
+.card__delete:hover {
+  opacity: 60%;
+}

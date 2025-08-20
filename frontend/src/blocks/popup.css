@@ -1,0 +1,262 @@
+.popup {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup__opened {
+  display: block;
+}
+
+.popup__container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  width: 430px;
+  height: fit-content;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 34px 0 36px;
+}
+
+.popup__container_delete-card {
+  padding: 34px 36px 36px;
+}
+
+.popup__close {
+  background-image: url("../images/Close Icon.png");
+  background-color: transparent;
+  position: absolute;
+  top: -48px;
+  right: -48px;
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-style: none;
+  cursor: pointer;
+}
+
+.popup__close:hover {
+  opacity: 60%;
+}
+
+.popup__title {
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  color: #000;
+  margin: 0;
+  padding: 0 36px 54px;
+  text-align: left;
+}
+
+.popup__title_delete-card {
+  padding: 0 0 38px;
+}
+
+.popup__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 36px;
+}
+
+.popup__field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.popup__input {
+  box-sizing: content-box;
+  width: 100%;
+  height: 28px;
+  padding-bottom: 10px;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #000;
+  border-style: none;
+  border-bottom: 1px solid #5454545b;
+}
+
+.popup__input:focus {
+  outline: none;
+}
+
+.popup__input_type_error {
+  border-bottom: 1px solid #f00;
+}
+
+.popup__input-error {
+  display: block;
+  width: 100%;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 100%;
+  color: #f00;
+  margin: 0;
+  padding: 6px 0 9px;
+  opacity: 0;
+}
+
+.popup__input-error_active {
+  opacity: 1;
+}
+
+.popup__save-button {
+  width: 100%;
+  height: 50px;
+  background-color: #000;
+  color: #fff;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  border-style: none;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 48px;
+}
+
+.popup__save-button_delete-card {
+  margin-top: 0;
+}
+
+.popup__save-button:hover {
+  opacity: 0.8;
+}
+
+.popup__save-button_disabled {
+  background-color: #0000004d;
+  cursor: not-allowed;
+}
+
+.popup__image {
+  width: auto;
+  height: 540px;
+  object-fit: contain;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  justify-content: left;
+}
+
+.popup__image-photo {
+  width: auto;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+}
+
+.popup__image-title {
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 12px;
+  color: #fff;
+  margin: 0;
+  padding-top: 10px;
+  text-align: left;
+}
+
+/* Estilos para mensaje de registro */
+.popup__container-registered {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  width: 430px;
+  height: 330px;
+  border-radius: 16px;
+  background-color: #fff;
+  padding: 60px 36px;
+}
+
+.popup__registered-image {
+  width: 120px;
+  height: 120px;
+  margin: 0 0 32px;
+}
+
+.popup__message {
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  color: #000;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+@media screen and (max-width: 619px) and (min-width: 320px) {
+  .popup__container {
+    width: 282px;
+    padding: 25px 22px;
+  }
+  .popup__close {
+    top: -48px;
+    right: 2px;
+    width: 26px;
+    height: 26px;
+  }
+  .popup__close-register-button {
+    top: -48px;
+    right: 127px;
+    width: 26px;
+    height: 26px;
+  }
+  .popup__title {
+    font-size: 18px;
+    line-height: 23px;
+    padding: 0 0 76px;
+  }
+  .popup__form {
+    padding: 0 0;
+  }
+  .popup__input {
+    height: 26px;
+    padding-bottom: 8px;
+  }
+
+  .popup__save-button {
+    height: 46px;
+    font-size: 14px;
+    line-height: 17px;
+    margin-top: 46px;
+  }
+
+  .popup__container-registered {
+    width: 280px;
+    height: 308px;
+    top: 33%;
+    padding: 50px 18px 26px;
+  }
+
+  .popup__message {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .popup__message_close {
+    top: -25px;
+    right: 140px;
+  }
+}
