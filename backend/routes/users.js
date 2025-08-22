@@ -39,10 +39,12 @@ router.patch(
       name: Joi.string().min(2).max(30).required(),
       about: Joi.string().min(2).max(30).required(),
     }),
-    headers: Joi.object().keys({
-      authorization: Joi.string().required(),
-      "content-type": Joi.string().valid("application/json").required(),
-    }),
+    headers: Joi.object()
+      .keys({
+        authorization: Joi.string().required(),
+        "content-type": Joi.string().valid("application/json").required(),
+      })
+      .unknown(true),
   }),
   updateUser
 );

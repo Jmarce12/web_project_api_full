@@ -5,12 +5,22 @@ class HandleErrors extends Error {
   }
 }
 
-export const WentWrongError = (message) => new HandleErrors(message, 400);
+export function WentWrongError(message) {
+  return new HandleErrors(message, 400);
+}
 
-export const WrongAuthError = (message) => new HandleErrors(message, 401);
+export function WrongAuthError(message) {
+  return new HandleErrors(message, 401);
+}
 
-export const UnauthorizedError = (message) => new HandleErrors(message, 403);
+export function UnauthorizedError(message) {
+  return new HandleErrors(message, 403);
+}
 
-export const NotFoundError = (message) => new HandleErrors(message, 404);
+export function NotFoundError(message) {
+  return new HandleErrors(message, 404);
+}
 
-export const ServerError = (message) => new HandleErrors(message, 500);
+export function ServerError(message) {
+  return new HandleErrors(message, 500);
+}

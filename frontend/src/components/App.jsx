@@ -25,6 +25,7 @@ import * as auth from "../utils/auth.js";
 import { setToken, getToken } from "../utils/token.js";
 
 function App() {
+  const [userToken, setUserToken] = useState("");
   const [userData, setUserData] = useState({ email: "" });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
@@ -80,41 +81,58 @@ function App() {
     }
     auth
       .signIn(email, password)
-      .then((data) => {
+      .then(async (data) => {
         if (data.token) {
           setToken(data.token);
           setIsLoggedIn(true);
-          const redirectPath = location.state?.from?.pathname || "/";
-          handleUserData();
-          navigate(redirectPath);
+          await handleStart();
         }
       })
       .catch(console.error);
   };
 
-  const handleUserData = () => {
-    auth
-      .getUser(getToken())
-      .then(({ data }) => {
-        setUserData({ email: data.email });
-        setCurrentUser((prev) => ({ ...prev, email: data.email }));
-      })
-      .catch(console.error);
+  const handleStart = async () => {
+    try {
+      const dataUser = await api.getUserData();
+      setCurrentUser(dataUser);
+      setUserData({ email: dataUser.email });
+      const redirectPath = location.state?.from?.pathname || "/";
+      console.log(redirectPath);
+      navigate("/dashboard");
+      const dataCards = await api.getInitialCards();
+      setCards(dataCards);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
+  // const handleUserData = () => {
+  //   auth
+  //     .getUser(getToken())
+  //     .then(({ data }) => {
+  //       setUserData({ email: data.email });
+  //       setCurrentUser((prev) => ({ ...prev, email: data.email }));
+  //     })
+  //     .catch(console.error);
+  // };
+
   useEffect(() => {
-    const token = getToken();
-    if (!token) {
+    setUserToken(getToken());
+    console.log(getToken());
+  }, []);
+
+  useEffect(() => {
+    if (!userToken) {
       return;
     }
     auth
-      .getUser(token)
-      .then(({ data: { email } }) => {
-        setUserData({ email });
+      .getUser(userToken)
+      .then(async () => {
         setIsLoggedIn(true);
+        await handleStart();
       })
       .catch(console.error);
-  }, []);
+  }, [userToken]);
 
   function handleOpenPopup(popup) {
     setPopup(popup);
@@ -123,18 +141,6 @@ function App() {
   function handleClosePopup() {
     setPopup(null);
   }
-
-  useEffect(() => {
-    api.getUserData().then((data) => {
-      setCurrentUser(data);
-    });
-  }, []);
-
-  useEffect(() => {
-    api.getInitialCards().then((data) => {
-      setCards(data);
-    });
-  }, []);
 
   const handleUpdateUser = (data) => {
     (async () => {
@@ -160,12 +166,13 @@ function App() {
 
   async function handleCardLike(card) {
     // Verifica una vez más si a esta tarjeta ya les has dado like
-    const isLiked = card.isLiked;
+    const isLiked = card.likes.some((like) => like === currentUser._id);
 
     // Envía una solicitud a la API y obtén los datos actualizados de la tarjeta
     await api
       .cardLike(card._id, isLiked)
       .then((newCard) => {
+        console.log(newCard);
         setCards((state) =>
           state.map((currentCard) =>
             currentCard._id === card._id ? newCard : currentCard
@@ -216,7 +223,7 @@ function App() {
         onCardLike={handleCardLike}
         onCardDelete={handleCardDelete}
         onAddPlaceSubmit={handleAddPlaceSubmit}
-        onHandleUserData={handleUserData}
+        // onHandleUserData={handleUserData}
         isLoggedIn={isLoggedIn}
       />
       <Footer />

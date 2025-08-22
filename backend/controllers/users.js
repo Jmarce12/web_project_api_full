@@ -15,7 +15,7 @@ const {
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
-  return User.findOne(email)
+  return User.findOne({ email: email })
     .select("+password")
     .then((user) => {
       if (!user) {
@@ -65,7 +65,7 @@ module.exports.createUser = async (req, res, next) => {
 module.exports.getCurrentUser = (req, res, next) => {
   const { _id } = req.user._id;
 
-  User.findById(_id)
+  User.findOne({ id: _id })
     .then((userData) => {
       if (!userData) {
         throw new NotFoundError("Usuario no encontrado");
@@ -102,9 +102,6 @@ module.exports.getUserById = (req, res, next) => {
 module.exports.updateUser = (req, res, next) => {
   const { name, about } = req.body;
   const userId = req.user._id;
-  if (userId !== req.params._id) {
-    throw new WrongAuthError("No tienes permiso para actualizar este usuario");
-  }
   User.findByIdAndUpdate(
     userId,
     { name, about },

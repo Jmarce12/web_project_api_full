@@ -1,6 +1,7 @@
 /* eslint-disable comma-dangle */
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const { celebrate, Joi } = require("celebrate");
 const { errors } = require("celebrate");
 require("dotenv").config();
@@ -11,14 +12,21 @@ const { requestLogger, errorLogger } = require("./middleware/loggers");
 const users = require("./routes/users");
 const cards = require("./routes/cards");
 
+const allowedOrigins = ["http://localhost:3000"];
+
 const app = express();
 
+app.use(
+  cors({
+    origin: allowedOrigins,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 mongoose.connect("mongodb://localhost:27017/aroundb");
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3001 } = process.env;
 
 app.use(requestLogger);
 
@@ -43,7 +51,7 @@ app.post(
   login
 );
 app.use(auth);
-app.use("/users/me", getCurrentUser);
+app.get("/users/me", getCurrentUser);
 app.use("/users", users);
 app.use("/cards", cards);
 

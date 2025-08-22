@@ -1,4 +1,4 @@
-export const BASE_URL = "https://se-register-api.en.tripleten-services.com/v1";
+export const BASE_URL = "http://localhost:3001";
 
 export const signUp = (email, password) => {
   const encodeURL = encodeURI(`${BASE_URL}/signup`);
@@ -62,6 +62,7 @@ export const getUser = (token) => {
     return res.ok
       ? res.json()
       : Promise.reject(() => {
+          console.log(res);
           if (res.status === 400) {
             throw new Error(
               "Token no proporcionado o proporcionado en el formato incorrecto"

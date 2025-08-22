@@ -1,3 +1,5 @@
+import { getToken } from "./token";
+
 class Api {
   constructor(options) {
     this.baseUrl = options.baseUrl;
@@ -48,9 +50,16 @@ class Api {
   }
 
   _makeFetch(url, method, body) {
+    const token = getToken();
+    const headers = {
+      ...this.headers,
+    };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
     return fetch(url, {
       method: method,
-      headers: this.headers,
+      headers: headers,
       body: body ? JSON.stringify(body) : undefined,
     }).then((res) => this._checkResponse(res));
   }
@@ -64,9 +73,8 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: "https://around-api.es.tripleten-services.com/v1/",
+  baseUrl: "http://localhost:3001/",
   headers: {
-    authorization: "811785a2-de15-4b25-a503-1867df4610d5",
     "Content-Type": "application/json",
   },
 });
