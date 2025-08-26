@@ -12,15 +12,10 @@ const { requestLogger, errorLogger } = require("./middleware/loggers");
 const users = require("./routes/users");
 const cards = require("./routes/cards");
 
-const allowedOrigins = ["http://localhost:3000"];
-
 const app = express();
 
-app.use(
-  cors({
-    origin: allowedOrigins,
-  })
-);
+app.use(cors());
+app.options("*", cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
