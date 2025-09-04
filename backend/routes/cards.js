@@ -18,7 +18,7 @@ router.post(
       link: Joi.string().required().uri(),
     }),
   }),
-  createCard
+  createCard,
 );
 router.delete(
   "/:cardId",
@@ -26,12 +26,13 @@ router.delete(
     params: Joi.object().keys({
       cardId: Joi.string().hex().length(24),
     }),
-    headers: Joi.object().keys({
-      authorization: Joi.string().required(),
-      "content-type": Joi.string().valid("application/json").required(),
-    }),
+    // headers: Joi.object()
+    //   .keys({
+    //     authorization: Joi.string().required(),
+    //   })
+    //   .unknown(true),
   }),
-  deleteCard
+  deleteCard,
 );
 router.put("/:cardId/likes", likeCard);
 router.delete("/:cardId/likes", dislikeCard);

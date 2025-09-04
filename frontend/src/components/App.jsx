@@ -266,14 +266,7 @@ function App() {
 
   return (
     <>
-      <div
-        className="page"
-        style={
-          useLocation().pathname === "/"
-            ? { height: "100%" }
-            : { height: "100vh" }
-        }
-      >
+      <div className="page">
         <CurrentUserContext.Provider
           value={{
             isLoggedIn,

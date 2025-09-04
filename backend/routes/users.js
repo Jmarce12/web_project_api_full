@@ -15,21 +15,21 @@ router.get(
       "content-type": Joi.string().valid("application/json").required(),
     }),
   }),
-  getUsers
+  getUsers,
 );
 
 router.get(
-  "/:_id",
+  "/:id",
   celebrate({
     params: Joi.object().keys({
-      _id: Joi.string().hex().length(24).required(),
+      id: Joi.string().hex().length(24).required(),
     }),
     headers: Joi.object().keys({
       authorization: Joi.string().required(),
       "content-type": Joi.string().valid("application/json").required(),
     }),
   }),
-  getUserById
+  getUserById,
 );
 
 router.patch(
@@ -46,21 +46,27 @@ router.patch(
       })
       .unknown(true),
   }),
-  updateUser
+  updateUser,
 );
 
 router.patch(
   "/me/avatar",
   celebrate({
-    body: Joi.object().keys({
-      avatar: Joi.string().uri().required(),
+    body: Joi.object({
+      avatar: Joi.string()
+        .uri({ scheme: ["http", "https"] })
+        .required(),
     }),
-    headers: Joi.object().keys({
-      authorization: Joi.string().required(),
-      "content-type": Joi.string().valid("application/json").required(),
-    }),
+    headers: Joi.object({
+      authorization: Joi.string()
+        .pattern(/^Bearer\s.+$/)
+        .required(),
+      "content-type": Joi.string()
+        .pattern(/^application\/json\b/i)
+        .required(),
+    }).unknown(true),
   }),
-  updateAvatar
+  updateAvatar,
 );
 
 module.exports = router;

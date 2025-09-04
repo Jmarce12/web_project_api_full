@@ -1,4 +1,3 @@
-/* eslint-disable comma-dangle */
 const bcrypt = require("bcryptjs");
 
 const jwt = require("jsonwebtoken");
@@ -15,6 +14,7 @@ const {
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
+  // eslint-disable-next-line object-shorthand
   return User.findOne({ email: email })
     .select("+password")
     .then((user) => {
@@ -36,7 +36,7 @@ module.exports.login = (req, res, next) => {
       const token = jwt.sign(
         { _id: user._id },
         NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
-        { expiresIn: "7d" }
+        { expiresIn: "7d" },
       );
       res.send({ token });
     })
@@ -87,9 +87,9 @@ module.exports.getUsers = (req, res, next) => {
 };
 
 module.exports.getUserById = (req, res, next) => {
-  const { _id } = req.params;
+  const { id } = req.params;
 
-  User.findById(_id)
+  User.findById(id)
     .then((userData) => {
       if (!userData) {
         throw new NotFoundError("Usuario no encontrado");
@@ -105,7 +105,7 @@ module.exports.updateUser = (req, res, next) => {
   User.findByIdAndUpdate(
     userId,
     { name, about },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   )
     .then((updatedUser) => {
       if (!updatedUser) {
@@ -118,6 +118,7 @@ module.exports.updateUser = (req, res, next) => {
 
 module.exports.updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
+  console.log(avatar);
   const userId = req.user._id;
 
   User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })

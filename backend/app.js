@@ -14,8 +14,14 @@ const cards = require("./routes/cards");
 
 const app = express();
 
-app.use(cors());
-app.options("*", cors());
+app.use(
+  cors({
+    origin: "*", // Permite todos (solo si no hay credenciales)
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -25,6 +31,12 @@ const { PORT = 3001 } = process.env;
 
 app.use(requestLogger);
 
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("El servidor se va a caer");
+  }, 0);
+});
+
 app.post(
   "/signup",
   celebrate({
@@ -33,7 +45,7 @@ app.post(
       password: Joi.string().required(),
     }),
   }),
-  createUser
+  createUser,
 );
 app.post(
   "/signin",
@@ -43,7 +55,7 @@ app.post(
       password: Joi.string().required(),
     }),
   }),
-  login
+  login,
 );
 app.use(auth);
 app.get("/users/me", getCurrentUser);

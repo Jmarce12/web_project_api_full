@@ -73,6 +73,7 @@ class Api {
 }
 
 export const api = new Api({
+  // baseUrl: "https://api.wpaf.chickenkiller.com/",
   baseUrl: "http://localhost:3001/",
   headers: {
     "Content-Type": "application/json",
