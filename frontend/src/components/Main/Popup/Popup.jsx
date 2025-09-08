@@ -25,7 +25,15 @@ export default function Popup(props) {
           type="button"
           onClick={onClose}
         ></button>
-        {title && <h3 className="popup__title">{title}</h3>}
+        {title && (
+          <h3
+            className={`popup__title${
+              title === "¿Estás seguro?" ? " popup__title_delete-card" : ""
+            }`}
+          >
+            {title}
+          </h3>
+        )}
         {children}
       </div>
     </div>

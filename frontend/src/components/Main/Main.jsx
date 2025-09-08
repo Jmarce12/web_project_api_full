@@ -10,15 +10,14 @@ import Card from "../Card/Cards";
 export default function Main(props) {
   const { currentUser } = useContext(CurrentUserContext);
   const avatar = useRef();
-  const handleOpenPopup = props.onOpenPopup;
-  const handleClosePopup = props.onClosePopup;
+  const { onOpenPopup, onClosePopup, onCardDelete, onCardLike } = props;
 
   const newCardPopup = {
     title: "Nuevo lugar",
     children: (
       <NewCard
         onAddPlaceSubmit={props.onAddPlaceSubmit}
-        onClose={handleClosePopup}
+        onClose={onClosePopup}
       />
     ),
   };
@@ -38,7 +37,7 @@ export default function Main(props) {
       <section className="profile">
         <div
           className="profile__photo-container"
-          onClick={() => handleOpenPopup(editAvatarPopup)}
+          onClick={() => onOpenPopup(editAvatarPopup)}
         >
           <img
             src={currentUser.avatar}
@@ -51,7 +50,7 @@ export default function Main(props) {
           <h1 className="profile__name">{currentUser.name}</h1>
           <button
             className="profile__edit-button"
-            onClick={() => handleOpenPopup(editProfilePopup)}
+            onClick={() => onOpenPopup(editProfilePopup)}
           ></button>
           <p className="profile__job">{currentUser.about}</p>
         </div>
@@ -59,7 +58,7 @@ export default function Main(props) {
           aria-label="Add card"
           className="profile__add-button"
           type="button"
-          onClick={() => handleOpenPopup(newCardPopup)}
+          onClick={() => onOpenPopup(newCardPopup)}
         >
           +
         </button>
@@ -69,15 +68,15 @@ export default function Main(props) {
           <Card
             key={card._id}
             card={card}
-            handleOpenPopup={handleOpenPopup}
-            onCardLike={props.onCardLike}
-            onCardDelete={props.onCardDelete}
+            onOpenPopup={onOpenPopup}
+            onCardLike={onCardLike}
+            onCardDelete={onCardDelete}
           />
         ))}
       </ul>
       {props.popup && (
         <Popup
-          onClose={handleClosePopup}
+          onClose={onClosePopup}
           title={props.popup.title}
           isLoggedIn={props.isLoggedIn}
         >

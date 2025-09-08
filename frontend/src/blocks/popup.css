@@ -21,10 +21,6 @@
   height: fit-content;
   border-radius: 10px;
   background-color: #fff;
-  padding: 34px 0 36px;
-}
-
-.popup__container_delete-card {
   padding: 34px 36px 36px;
 }
 
@@ -53,7 +49,7 @@
   line-height: 29px;
   color: #000;
   margin: 0;
-  padding: 0 36px 54px;
+  padding: 0 0 54px;
   text-align: left;
 }
 
@@ -65,7 +61,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 36px;
 }
 
 .popup__field {

@@ -15,10 +15,10 @@ export default function RemoveCard(props) {
       noValidate
       onSubmit={handleSubmit}
     >
-      <p className="popup__text">
-        ¿Estás seguro de que quieres eliminar esta tarjeta?
-      </p>
-      <button type="submit" className="popup__save-button">
+      <button
+        type="submit"
+        className="popup__save-button popup__save-button_delete-card"
+      >
         Sí
       </button>
     </form>

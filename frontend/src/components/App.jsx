@@ -106,16 +106,6 @@ function App() {
     }
   };
 
-  // const handleUserData = () => {
-  //   auth
-  //     .getUser(getToken())
-  //     .then(({ data }) => {
-  //       setUserData({ email: data.email });
-  //       setCurrentUser((prev) => ({ ...prev, email: data.email }));
-  //     })
-  //     .catch(console.error);
-  // };
-
   useEffect(() => {
     setUserToken(getToken());
     console.log(getToken());
@@ -165,7 +155,6 @@ function App() {
   }
 
   async function handleCardLike(card) {
-    // Verifica una vez más si a esta tarjeta ya les has dado like
     const isLiked = card.likes.some((like) => like === currentUser._id);
 
     // Envía una solicitud a la API y obtén los datos actualizados de la tarjeta

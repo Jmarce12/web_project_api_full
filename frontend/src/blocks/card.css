@@ -67,13 +67,15 @@
 }
 
 .card__delete {
-  width: 18px;
-  height: 19px;
+  width: 24px;
+  height: 24px;
   background-image: url(../images/trash.png);
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: transparent;
-  border-style: none;
+  background-color: #fff;
+  filter: opacity(0.5);
+  mix-blend-mode: difference;
+  border: none;
   padding: 0;
   cursor: pointer;
   position: absolute;
@@ -82,5 +84,5 @@
 }
 
 .card__delete:hover {
-  opacity: 60%;
+  filter: opacity(1);
 }
