@@ -6,13 +6,17 @@ import { useContext } from "react";
 export default function Card(props) {
   const { name, link, likes } = props.card;
   const { onOpenPopup, onCardLike, onCardDelete } = props;
+
   const imageComponent = { children: <ImagePopup card={{ name, link }} /> };
   const removeCardComponent = {
     title: "¿Estás seguro?",
     children: <RemoveCard onCardDelete={onCardDelete} card={props.card} />,
   };
+
   const { currentUser } = useContext(CurrentUserContext);
+
   const isLiked = likes.some((like) => like === currentUser._id);
+
   const cardLikeButtonClassName = `card__like ${
     isLiked ? "card__like__active" : ""
   }`;

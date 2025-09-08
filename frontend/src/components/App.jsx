@@ -14,7 +14,6 @@ import ProtectedRoute from "./ProtectedRoute/ProtectedRoute.jsx";
 import Login from "./Login/Login.jsx";
 import Register from "./Register/Register.jsx";
 import InfoTooltip from "./Register/InfoTooltip.jsx";
-
 import CurrentUserContext from "../contexts/CurrentUserContext.js";
 
 import successfulRegister from "../images/successful-registered.png";
@@ -38,7 +37,7 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // This effect listens to window resize events
+  //Este efecto escucha los eventos de cambio de tamaño de la ventana
   useEffect(() => {
     const handleResize = () => {
       setWindowSize({ width: window.innerWidth });
@@ -69,12 +68,14 @@ function App() {
     }
   };
 
+  // Abre el popup de estado de registro cuando registerMessage cambia
   useEffect(() => {
     if (registerMessage.length > 0) {
       handleOpenPopup(registerStatusPopup);
     }
   }, [registerMessage]);
 
+  // Función para manejar el inicio de sesión
   const handleLogin = ({ email, password }) => {
     if (!email || !password) {
       return;
@@ -91,6 +92,7 @@ function App() {
       .catch(console.error);
   };
 
+  // Función para obtener los datos del usuario y las tarjetas al iniciar sesión
   const handleStart = async () => {
     try {
       const dataUser = await api.getUserData();
@@ -106,11 +108,12 @@ function App() {
     }
   };
 
+  // Efecto para verificar el token del usuario al cargar la aplicación
   useEffect(() => {
     setUserToken(getToken());
-    console.log(getToken());
   }, []);
 
+  // Efecto para detectar si existe un token y obtener los datos del usuario
   useEffect(() => {
     if (!userToken) {
       return;

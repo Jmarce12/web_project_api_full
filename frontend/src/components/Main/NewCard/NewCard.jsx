@@ -7,6 +7,7 @@ export default function NewCard(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
+
     props.onAddPlaceSubmit({
       name: cardName.current.value,
       link: cardLink.current.value,

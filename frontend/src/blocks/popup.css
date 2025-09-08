@@ -53,10 +53,6 @@
   text-align: left;
 }
 
-.popup__title_delete-card {
-  padding: 0 0 38px;
-}
-
 .popup__form {
   display: flex;
   flex-direction: column;
@@ -124,10 +120,6 @@
   margin-top: 48px;
 }
 
-.popup__save-button_delete-card {
-  margin-top: 0;
-}
-
 .popup__save-button:hover {
   opacity: 0.8;
 }
@@ -137,6 +129,16 @@
   cursor: not-allowed;
 }
 
+/* Estilos para popup de eliminar tarjeta */
+.popup__title_delete-card {
+  padding: 0 0 38px;
+}
+
+.popup__save-button_delete-card {
+  margin-top: 0;
+}
+
+/* Estilos para popup de imagen */
 .popup__image {
   width: auto;
   height: 540px;

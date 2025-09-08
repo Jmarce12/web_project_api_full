@@ -42,12 +42,12 @@ function Header({ setIsLoggedIn }) {
   };
 
   useEffect(() => {
-    // If the user is not logged in, the menu should always be closed.
+    //Si el usuario no ha iniciado sesión, el menú siempre debe estar cerrado.
     if (!isLoggedIn) {
       setOpenMenu(false);
     }
 
-    // If the window is resized to a desktop width, close the mobile menu.
+    //Si la ventana se redimensiona a un ancho de escritorio, cierre el menú móvil.
     if (windowSize.width > 768) {
       setOpenMenu(false);
     }

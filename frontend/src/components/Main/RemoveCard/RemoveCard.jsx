@@ -3,6 +3,7 @@ export default function RemoveCard(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
+
     onCardDelete(card);
     onClose();
   }

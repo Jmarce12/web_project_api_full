@@ -2,11 +2,11 @@ import { useState, useContext } from "react";
 import CurrentUserContext from "../../../contexts/CurrentUserContext";
 
 export default function EditProfile() {
-  const userContext = useContext(CurrentUserContext); // Obtiene el objeto currentUser
+  const userContext = useContext(CurrentUserContext);
   const { currentUser, handleUpdateUser } = userContext;
 
-  const [name, setName] = useState(currentUser.name); // Agrega la variable de estado para name
-  const [description, setDescription] = useState(currentUser.about); // Agrega la variable de estado para description
+  const [name, setName] = useState(currentUser.name);
+  const [description, setDescription] = useState(currentUser.about);
 
   const handleNameChange = (event) => {
     setName(event.target.value); // Actualiza name cuando cambie la entrada
@@ -17,7 +17,7 @@ export default function EditProfile() {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault(); // Evita el comportamiento predeterminado del envío de formularios
+    event.preventDefault();
 
     handleUpdateUser({ name: name, about: description }); // Actualiza la información del usuario
   };
