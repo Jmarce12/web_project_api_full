@@ -1,5 +1,5 @@
-// export const BASE_URL = "https://api.wpaf.chickenkiller.com";
-export const BASE_URL = "http://localhost:3001";
+export const BASE_URL = "https://api.wpaf.chickenkiller.com";
+// export const BASE_URL = "http://localhost:3001";
 
 export const signUp = (email, password) => {
   const encodeURL = encodeURI(`${BASE_URL}/signup`);
