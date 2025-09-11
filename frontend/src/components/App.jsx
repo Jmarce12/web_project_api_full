@@ -99,8 +99,7 @@ function App() {
       setCurrentUser(dataUser);
       setUserData({ email: dataUser.email });
       const redirectPath = location.state?.from?.pathname || "/";
-      console.log(redirectPath);
-      navigate("/dashboard");
+      navigate(redirectPath);
       const dataCards = await api.getInitialCards();
       setCards(dataCards);
     } catch (error) {
